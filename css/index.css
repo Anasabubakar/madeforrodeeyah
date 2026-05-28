@@ -207,6 +207,85 @@
       background: rgba(255, 255, 255, 0.98) !important;
   }
 
+  .media-lightbox {
+      position: fixed;
+      inset: 0;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.88);
+      backdrop-filter: blur(12px);
+      z-index: 100000;
+      padding: 20px;
+  }
+
+  .media-lightbox.show {
+      display: flex;
+  }
+
+  .media-lightbox-content {
+      width: min(1000px, calc(100vw - 40px));
+      max-height: 90vh;
+      background: rgba(20, 10, 26, 0.94);
+      border-radius: 26px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 40px 120px rgba(0, 0, 0, 0.35);
+      position: relative;
+  }
+
+  .media-lightbox-content .lightbox-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 40px;
+      height: 40px;
+      border: none;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+      font-size: 24px;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      transition: transform 0.2s ease, background 0.2s ease;
+      z-index: 2;
+  }
+
+  .media-lightbox-content .lightbox-close:hover {
+      transform: scale(1.05);
+      background: rgba(255, 255, 255, 0.22);
+  }
+
+  .media-lightbox-content .lightbox-caption {
+      padding: 24px 24px 12px;
+      color: #ffe5f0;
+      text-align: center;
+      font-size: clamp(20px, 2.5vw, 30px);
+      line-height: 1.2;
+      font-family: 'Dancing Script', cursive;
+      text-shadow: 0 2px 18px rgba(0, 0, 0, 0.3);
+  }
+
+  .media-lightbox-content .lightbox-media-wrapper {
+      padding: 0 24px 24px;
+      max-height: calc(90vh - 120px);
+  }
+
+  .media-lightbox-content .lightbox-media-wrapper img,
+  .media-lightbox-content .lightbox-media-wrapper video {
+      width: 100%;
+      max-height: 75vh;
+      border-radius: 20px;
+      object-fit: contain;
+      display: block;
+      background: #000;
+  }
+
+  .media-lightbox-content .lightbox-media-wrapper video {
+      outline: none;
+  }
+
   .content-display p {
       margin: 0;
       padding: 0;
@@ -381,7 +460,9 @@
   }
 
   .page-front img,
-  .page-back img {
+  .page-back img,
+  .page-front video,
+  .page-back video {
       width: 100%;
       height: 100%;
       object-fit: cover;

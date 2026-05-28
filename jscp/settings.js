@@ -14,28 +14,24 @@ let settings = {
     gift: './image/happy3.gif',
     enableBook: true,
     pages: [
-        // --- Lembar 1 (data-page="0") ---
-        { 
-            image: './image/theend.jpg', // Menggantikan bolsw2.png (Index 0)
-        },
-        { 
-            image: './image/photos/b1.png', // Menggantikan lhvuck.png (Index 1)
-        },
-
-        // --- Lembar 2 (data-page="1") ---
-        { 
-            image: './image/photos/b2.png', // Menggantikan fjr3qh.png (Index 2)
-            content: 'Happy Birthday Sayang 💗' 
-        },
-        { 
-            image: './image/photos/b3.png', // Menggantikan 8u5tf7.png (Index 3)
-        },
-
-        // --- Lembar 3 (data-page="2") ---
-        { 
-            image: './image/theend.jpg', // Menggantikan tbutvj.png (Index 4)
-            content: 'As long as you’re smiling, I’m happy. Stay happy, my love.' 
-        }
+        { image: './image/photos/photo-snapchat-1.jpg' },
+        { image: './image/photos/photo-screenshot-20250912.jpg' },
+        { image: './image/photos/video-snapchat-1.mp4' },
+        { image: './image/photos/video-snapchat-2.mp4' },
+        { image: './image/photos/video-snapchat-3.mp4' },
+        { image: './image/photos/video-snapchat-4.mp4' },
+        { image: './image/photos/video-snapchat-5.mp4' },
+        { image: './image/photos/video-snapchat-6.mp4' },
+        { image: './image/photos/video-snapchat-7.mp4' },
+        { image: './image/photos/video-snapchat-8.mp4' },
+        { image: './image/photos/video-snapchat-9.mp4' },
+        { image: './image/photos/video-snapchat-10.mp4' },
+        { image: './image/photos/photo-wa-1.jpg' },
+        { image: './image/photos/photo-wa-2.jpg' },
+        { image: './image/photos/video-wa-1.mp4' },
+        { image: './image/photos/photo-wa-3.jpg' },
+        { image: './image/photos/photo-wa-4.jpg' },
+        { image: './image/photos/video-wa-2.mp4' }
     ],
     enableBook: true,
     enableHeart: true,
@@ -357,28 +353,24 @@ function initializeDefaultSettings() {
         isSave: false,  
         colorTheme: 'pink',
         pages: [
-            // --- Lembar 1 (data-page="0") ---
-            { 
-                image: './image/theend.jpg', // Menggantikan bolsw2.png (Index 0)
-            },
-            { 
-                image: './image/photos/b1.png', // Menggantikan lhvuck.png (Index 1)
-            },
-
-            // --- Lembar 2 (data-page="1") ---
-            { 
-                image: './image/photos/b2.png', // Menggantikan fjr3qh.png (Index 2)
-                content: 'Happy Birthday Sayang 💗' 
-            },
-            { 
-                image: './image/photos/b3.png', // Menggantikan 8u5tf7.png (Index 3)
-            },
-
-            // --- Lembar 3 (data-page="2") ---
-            { 
-                image: './image/photos/b5.png', // Menggantikan tbutvj.png (Index 4)
-                content: 'As long as you’re smiling, I’m happy. Stay happy, my love.' 
-            }
+            { image: './image/photos/photo-snapchat-1.jpg', content: 'Rodeeyah, you are my first love.' },
+            { image: './image/photos/photo-screenshot-20250912.jpg', content: 'Every moment with you feels like a dream.' },
+            { image: './image/photos/video-snapchat-1.mp4', content: 'Your smile is my favorite scene.' },
+            { image: './image/photos/video-snapchat-2.mp4', content: 'I keep you close in every heartbeat.' },
+            { image: './image/photos/video-snapchat-3.mp4', content: 'Love grows deeper each day with you.' },
+            { image: './image/photos/video-snapchat-4.mp4', content: 'You make my world brighter and sweeter.' },
+            { image: './image/photos/video-snapchat-5.mp4', content: 'My heart is yours forever.' },
+            { image: './image/photos/video-snapchat-6.mp4', content: 'I cherish your laughter and your light.' },
+            { image: './image/photos/video-snapchat-7.mp4', content: 'With you, every moment becomes magic.' },
+            { image: './image/photos/video-snapchat-8.mp4', content: 'This gift is wrapped in love for you.' },
+            { image: './image/photos/video-snapchat-9.mp4', content: 'You are my happiness and my peace.' },
+            { image: './image/photos/video-snapchat-10.mp4', content: 'My love for you blooms every day.' },
+            { image: './image/photos/photo-wa-1.jpg', content: 'You are the melody in my heart.' },
+            { image: './image/photos/photo-wa-2.jpg', content: 'Your beauty lights up the darkest nights.' },
+            { image: './image/photos/video-wa-1.mp4', content: 'I dream of holding you close forever.' },
+            { image: './image/photos/photo-wa-3.jpg', content: 'My soul is happiest beside you.' },
+            { image: './image/photos/photo-wa-4.jpg', content: 'You make every day feel like a celebration.' },
+            { image: './image/photos/video-wa-2.mp4', content: 'Always yours, always loving you.' }
         ]
     };
 
@@ -1026,6 +1018,92 @@ function updateExpireDateDisplay() {
         }
     }
 }
+function createMediaLightbox() {
+    let lightbox = document.getElementById('mediaLightbox');
+    if (lightbox) return lightbox;
+
+    lightbox = document.createElement('div');
+    lightbox.id = 'mediaLightbox';
+    lightbox.className = 'media-lightbox';
+    lightbox.innerHTML = `
+        <div class="media-lightbox-content">
+            <button class="lightbox-close" aria-label="Close media preview">×</button>
+            <div class="lightbox-caption"></div>
+            <div class="lightbox-media-wrapper"></div>
+        </div>
+    `;
+    document.body.appendChild(lightbox);
+
+    lightbox.querySelector('.lightbox-close').addEventListener('click', closeMediaLightbox);
+    lightbox.addEventListener('click', (event) => {
+        if (event.target === lightbox) {
+            closeMediaLightbox();
+        }
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            closeMediaLightbox();
+        }
+    });
+
+    return lightbox;
+}
+
+function openMediaLightbox(src, caption) {
+    const lightbox = createMediaLightbox();
+    const captionElement = lightbox.querySelector('.lightbox-caption');
+    const mediaWrapper = lightbox.querySelector('.lightbox-media-wrapper');
+
+    captionElement.textContent = caption || 'Made with love for Rodeeyah';
+    mediaWrapper.innerHTML = '';
+
+    if (/\.(mp4|webm|ogg)$/i.test(src)) {
+        const video = document.createElement('video');
+        video.src = src;
+        video.controls = true;
+        video.muted = true;
+        video.loop = true;
+        video.autoplay = true;
+        video.playsInline = true;
+        video.preload = 'auto';
+        video.style.width = '100%';
+        video.style.height = '100%';
+        video.style.objectFit = 'contain';
+        mediaWrapper.appendChild(video);
+        video.addEventListener('error', () => {
+            mediaWrapper.textContent = 'Unable to load the video.';
+        });
+    } else {
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = caption || 'Special photo for Rodeeyah';
+        img.style.width = '100%';
+        img.style.height = 'auto';
+        img.style.maxHeight = '75vh';
+        img.style.objectFit = 'contain';
+        img.addEventListener('error', () => {
+            mediaWrapper.textContent = 'Unable to load the photo.';
+        });
+        mediaWrapper.appendChild(img);
+    }
+
+    lightbox.classList.add('show');
+}
+
+function closeMediaLightbox() {
+    const lightbox = document.getElementById('mediaLightbox');
+    if (!lightbox) return;
+
+    const video = lightbox.querySelector('video');
+    if (video) {
+        video.pause();
+        video.currentTime = 0;
+    }
+
+    lightbox.classList.remove('show');
+}
+
 function createPages() {
 
     book.innerHTML = '';
@@ -1048,20 +1126,56 @@ function createPages() {
             const frontPageData = pages[frontLogicalIndex];
 
             if (frontPageData.image) {
-                const frontImg = document.createElement('img');
-                frontImg.src = frontPageData.image;
-                frontImg.onerror = function () {
-                    const placeholderText = frontLogicalIndex === 0 ? 'Bìa Sách' : `Trang ${frontLogicalIndex + 1}`;
-                    this.src = createPlaceholderImage(placeholderText);
-                };
-                front.appendChild(frontImg);
+                const mediaSrc = frontPageData.image;
+                const placeholderText = frontLogicalIndex === 0 ? 'Bìa Sách' : `Trang ${frontLogicalIndex + 1}`;
+                const captionText = frontPageData.content || `Made with love for Rodeeyah`;
+
+                if (/\.(mp4|webm|ogg)$/i.test(mediaSrc)) {
+                    const frontVideo = document.createElement('video');
+                    frontVideo.src = mediaSrc;
+                    frontVideo.controls = true;
+                    frontVideo.muted = true;
+                    frontVideo.loop = true;
+                    frontVideo.autoplay = true;
+                    frontVideo.playsInline = true;
+                    frontVideo.preload = 'auto';
+                    frontVideo.style.width = '100%';
+                    frontVideo.style.height = '100%';
+                    frontVideo.style.objectFit = 'cover';
+                    frontVideo.style.cursor = 'pointer';
+                    frontVideo.setAttribute('aria-label', captionText);
+                    frontVideo.addEventListener('click', (event) => {
+                        event.stopPropagation();
+                        openMediaLightbox(mediaSrc, captionText);
+                    });
+                    frontVideo.onerror = function () {
+                        const placeholder = document.createElement('img');
+                        placeholder.src = createPlaceholderImage(placeholderText);
+                        placeholder.alt = captionText;
+                        front.replaceChild(placeholder, frontVideo);
+                    };
+                    front.appendChild(frontVideo);
+                } else {
+                    const frontImg = document.createElement('img');
+                    frontImg.src = mediaSrc;
+                    frontImg.alt = captionText;
+                    frontImg.style.cursor = 'pointer';
+                    frontImg.addEventListener('click', (event) => {
+                        event.stopPropagation();
+                        openMediaLightbox(mediaSrc, captionText);
+                    });
+                    frontImg.onerror = function () {
+                        this.src = createPlaceholderImage(placeholderText);
+                    };
+                    front.appendChild(frontImg);
+                }
             } else {
                 front.classList.add('empty-page');
-               front.textContent = t('emptyPage');
+                front.textContent = t('emptyPage');
             }
         } else {
             front.classList.add('empty-page');
-           front.textContent = t('emptyPage');
+            front.textContent = t('emptyPage');
         }
 
         const back = document.createElement('div');
@@ -1071,13 +1185,48 @@ function createPages() {
             const backPageData = pages[backLogicalIndex];
 
             if (backPageData.image) {
-                const backImg = document.createElement('img');
-                backImg.src = backPageData.image;
-                backImg.onerror = function () {
-                    const placeholderText = `Trang ${backLogicalIndex + 1}`;
-                    this.src = createPlaceholderImage(placeholderText);
-                };
-                back.appendChild(backImg);
+                const mediaSrc = backPageData.image;
+                const placeholderText = `Trang ${backLogicalIndex + 1}`;
+                const captionText = backPageData.content || `Made with love for Rodeeyah`;
+                if (/\.(mp4|webm|ogg)$/i.test(mediaSrc)) {
+                    const backVideo = document.createElement('video');
+                    backVideo.src = mediaSrc;
+                    backVideo.controls = true;
+                    backVideo.muted = true;
+                    backVideo.loop = true;
+                    backVideo.autoplay = true;
+                    backVideo.playsInline = true;
+                    backVideo.preload = 'auto';
+                    backVideo.style.width = '100%';
+                    backVideo.style.height = '100%';
+                    backVideo.style.objectFit = 'cover';
+                    backVideo.style.cursor = 'pointer';
+                    backVideo.setAttribute('aria-label', captionText);
+                    backVideo.addEventListener('click', (event) => {
+                        event.stopPropagation();
+                        openMediaLightbox(mediaSrc, captionText);
+                    });
+                    backVideo.onerror = function () {
+                        const placeholder = document.createElement('img');
+                        placeholder.src = createPlaceholderImage(placeholderText);
+                        placeholder.alt = captionText;
+                        back.replaceChild(placeholder, backVideo);
+                    };
+                    back.appendChild(backVideo);
+                } else {
+                    const backImg = document.createElement('img');
+                    backImg.src = mediaSrc;
+                    backImg.alt = captionText;
+                    backImg.style.cursor = 'pointer';
+                    backImg.addEventListener('click', (event) => {
+                        event.stopPropagation();
+                        openMediaLightbox(mediaSrc, captionText);
+                    });
+                    backImg.onerror = function () {
+                        this.src = createPlaceholderImage(placeholderText);
+                    };
+                    back.appendChild(backImg);
+                }
             } else {
                 back.classList.add('empty-page');
                 back.textContent = t('emptyPage');
@@ -1087,7 +1236,7 @@ function createPages() {
             endImg.src = './image/theend.jpg';
             endImg.onerror = function () {
                 back.classList.add('empty-page');
-               back.textContent = t('endOfBook');
+                back.textContent = t('endOfBook');
             };
             back.appendChild(endImg);
         }
