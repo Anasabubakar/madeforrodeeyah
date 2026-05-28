@@ -1259,7 +1259,10 @@ function createPages() {
         });
     }
 
-    photoUrls = pages.filter(page => page.image).map(page => page.image);
+    photoUrls = pages.filter(page => page.image).map(page => ({
+        src: page.image,
+        caption: page.content || page.caption || 'Made with love for Rodeeyah'
+    }));
     
     // ✅ FIX: Tính toán z-index cho tất cả pages sau khi tạo
     if (typeof calculatePageZIndexes === 'function') {

@@ -990,7 +990,10 @@ let currentPage = 0;
 let isFlipping = false;
 let typewriterTimeout;
 let isBookFinished = false;
-let photoUrls = pages.filter(page => page.image).map(page => page.image);
+let photoUrls = pages.filter(page => page.image).map(page => ({
+    src: page.image,
+    caption: page.content || 'Made with love for Rodeeyah'
+}));
 
 function showConfetti() {
     const confettiColors = ['#ff6f91', '#ff9671', '#ffc75f', '#f9f871', '#ff3c78'];
@@ -1058,27 +1061,45 @@ const photoCache = new Map();
 let heartPhotosCreated = 0;
 const maxHeartPhotos = 30;
 
-function preloadPhoto(url) {
-    if (photoCache.has(url)) {
-        return photoCache.get(url);
+function preloadPhoto(item) {
+    const src = typeof item === 'string' ? item : item?.src;
+    if (!src) return null;
+
+    if (photoCache.has(src)) {
+        return photoCache.get(src);
     }
 
-    const img = new Image();
-    img.src = url;
-    photoCache.set(url, img);
-    return img;
+    const isVideo = src.toLowerCase().endsWith('.mp4');
+    const media = isVideo ? document.createElement('video') : new Image();
+    media.src = src;
+    photoCache.set(src, media);
+    return media;
 }
 
 function createHeartPhotoCentered(idx, total) {
     if (heartPhotosCreated >= maxHeartPhotos) return;
 
-    const photoUrl = photoUrls[idx % photoUrls.length];
-    const cachedImg = preloadPhoto(photoUrl);
+    const pageItem = photoUrls[idx % photoUrls.length];
+    const isVideo = pageItem.src.toLowerCase().endsWith('.mp4');
 
-    const photo = document.createElement('img');
-    photo.src = photoUrl;
+    const photo = isVideo ? document.createElement('video') : document.createElement('img');
+    photo.src = pageItem.src;
     photo.className = 'photo';
     photo.style.zIndex = '300';
+    photo.style.objectFit = 'cover';
+    photo.style.cursor = 'pointer';
+    if (isVideo) {
+        photo.muted = true;
+        photo.autoplay = true;
+        photo.loop = true;
+        photo.playsInline = true;
+    }
+
+    photo.addEventListener('click', () => {
+        if (typeof openMediaLightbox === 'function') {
+            openMediaLightbox(pageItem.src, pageItem.caption);
+        }
+    });
 
     // Tối ưu hóa vị trí tính toán
     const centerX = window.innerWidth * 0.5;
@@ -1118,7 +1139,7 @@ function spawnHeartPhotosCentered() {
     heartPhotosCreated = 0;
 
     // Preload tất cả ảnh trước
-    photoUrls.forEach(url => preloadPhoto(url));
+    photoUrls.forEach(item => preloadPhoto(item));
 
     // Sử dụng requestAnimationFrame để tạo animation mượt mà hơn
     let currentIndex = 0;
